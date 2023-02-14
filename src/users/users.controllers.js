@@ -1,5 +1,6 @@
 const { UUID } = require('sequelize');
 const Users = require('../models/users.models');
+const { hashPassword } = require('../utils/crypto');
 
 const findAllUsers =async()=>{
     
@@ -35,7 +36,7 @@ const createNewUser =async(user)=>{
         firstName:user.firstName,
         lastName: user.lastName,
         email: user.email,
-        password: user.password
+        password: hashPassword(user.password)
     }
 
     const data = await Users.create(newUser);

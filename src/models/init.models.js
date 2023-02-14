@@ -6,14 +6,14 @@ const Users = require("./users.models")
 
 const initModels =()=>{
 
-   Users.belongsTo(Participants)
-   Participants.hasMany(Users)
+   Users.hasMany(Participants)
+   Participants.belongsTo(Users)
 
    Participants.hasMany(Messages)
    Messages.belongsTo(Participants)
 
-   Participants.hasMany(Conversations)
-   Conversations.belongsTo(Participants)
+   Conversations.hasMany(Participants)
+   Participants.belongsTo(Conversations)
    
 }
 
