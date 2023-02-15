@@ -3,7 +3,7 @@ const initModels = require('./models/init.models');
 const db = require('./utils/database');
 const { success, error } = require('./utils/handleResponses');
 const userRouter = require('./users/users.router');
-
+const authRouter = require('./auth/auth.router');
 
 require('dotenv').config();
 const app = express();
@@ -38,6 +38,7 @@ app.get('/',(req,res)=>{
 
 
 app.use('/api/v1',userRouter);
+app.use('/api/v1/auth',authRouter);
 
 app.use('*',(req,res)=>{
     error({
@@ -46,7 +47,6 @@ app.use('*',(req,res)=>{
         message:'URL not found please try with http://localhost:9000'
     })
 })
-
 app.listen(9000,()=>{
     console.log('Server Started at port 9000')
 })

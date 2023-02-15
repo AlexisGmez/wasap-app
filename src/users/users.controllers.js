@@ -1,7 +1,7 @@
 const { UUID } = require('sequelize');
 const Users = require('../models/users.models');
 const { hashPassword } = require('../utils/crypto');
-
+const uuid = require('uuid');
 const findAllUsers =async()=>{
     
 
@@ -15,11 +15,29 @@ const findUserById=async(id)=>{
             id
         }
     })
+    return data;
+}
+
+
+const findUserByEmail =async(email)=>{
+    const data = await Users.findOne({
+        where:{
+            email
+        }
+    })
+    return data;
 }
 
 const updateUser =async(id,userObj)=>{
 
-    const data = await Users.update(userObj,{
+    const updatedUser = {
+        firstName: userObj.firstName,
+        lastName: userObj.lastName,
+        email: userObj.email,
+        password: hashPassword(userObj.password)
+    }
+
+    const data = await Users.update(updatedUser,{
         where:{
             id
         }
@@ -32,7 +50,7 @@ const createNewUser =async(user)=>{
     
     const newUser ={
 
-        id:UUID,
+        id:uuid.v4(),
         firstName:user.firstName,
         lastName: user.lastName,
         email: user.email,
@@ -57,5 +75,6 @@ module.exports = {
     findUserById,
     updateUser,
     createNewUser,
-    destroyUser
+    destroyUser,
+    findUserByEmail
 }

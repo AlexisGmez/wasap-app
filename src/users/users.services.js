@@ -24,8 +24,8 @@ const getAllUsers =(req,res)=>{
 }
 
 const getUserById =(req,res)=>{
-    const id = Number(req.params.id);
-    findUserById()
+    const id = req.params.id;
+    findUserById(id)
         .then(data=>{
             success({
                 status:200,
@@ -125,9 +125,9 @@ const patchUser =(req,res)=>{
 
 const putUser = (req,res)=>{
     const id = req.params.id;
-    const userObj = req.productObj;
+    const userObj = req.body;
 
-    if(!productObj.firstName || !productObj.lastName || !productObj.email||!productObj.password){
+    if(!userObj.firstName || !userObj.lastName || !userObj.email || !userObj.password){
         res.status(400).json({
             message:'missing data',
             fields:{
@@ -137,24 +137,17 @@ const putUser = (req,res)=>{
                 password: '*******'
             }
         })
+    }
 
-        updateUser(id,userObj)
+    updateUser(id,userObj)
             .then(data=>{
-                if (data) {
-                    success({
-                        status:200,
-                        data,
-                        message:'user updated succesfully',
-                        res
-                    })
-                }else{
-                    error({
-                        error:err,
-                        status:400,
-                        message:'error to update user',
-                        res
-                    })
-                }
+                success({
+                    status:200,
+                    data,
+                    message:'user updated succesfully',
+                    res
+                })
+                
             })
             .catch(err=>{
                 error({
@@ -164,7 +157,6 @@ const putUser = (req,res)=>{
                     res
                 })
             })
-    }
 }
 
 module.exports={
